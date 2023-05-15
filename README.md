@@ -1,34 +1,78 @@
-Journal Club - Cartographie sous R : méthodes et outils
+Journal Club - Cartographie sous
+<img src="logoR.png" style="width:1in" /> : méthodes et outils
 ================
-Gaspard Dubost, Vianney Guibourd de Luzinais, Romain Lécuyer et Thomas
+Gaspard Dubost, Vianney Guibourd de Luzinais, Romain Lécuyer & Thomas
 Outrequin
 15 mai 2023
 
-# Réalisation de figures cartographiques sous R
+# Réalisation de figures cartographiques
 
-Carto à partir de shapefiles, raster … Utilisation de base R, ggplot2 …
+Carto à partir de shapefiles, rasters (préexistants ou créés
+manuellement). Utilisation de base R, ggplot2, package central sf.
 
-# Outils cartographiques en parallèle de R
+# Outils cartographiques externes
 
-QGIS (ArcGIS)[^1] BDD géoréférencée (PostgreSQL)[^2]
+QGIS (ArcGIS)[^1] & BDD géoréférencée (PostgreSQL)[^2]
 
-# Structure du repository GitHub
+# Structure du *repository* GitHub
 
-## Données (`/data`)
+Le document de travail principal se présente sous la forme d’un fichier
+RMarkdown structurant la présentation en sections : de la compréhension
+des bases aux cas d’application concrets.
 
-## Programmation (`/scripts`)
+Les jeux de données et objets géoréférencés utilisés sont stockés dans
+le sous-dossier `/data`. Les fichiers de programmation exécutés sont
+stockés dans le sous-dossier `/script`.
 
-# Principaux *packages* R utilisés
+# Principaux *packages* utilisés
 
-All packages used throughout the workflow are stored in the R folder.
-They are to be loaded using R version 4.2.3 (2023-03-15 ucrt) running on
-Windows 10 x64 (build 19045).
-
-| Package | Version |
-|:--------|:--------|
-| dplyr   | 1.1.2   |
-| tidyr   | 1.3.0   |
-| sf      | 1.0.12  |
+<table>
+<thead>
+<tr>
+<th style="text-align:left;">
+Package
+</th>
+<th style="text-align:left;">
+Version
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+dplyr
+</td>
+<td style="text-align:left;">
+1.1.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+tidyr
+</td>
+<td style="text-align:left;">
+1.3.0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+sf
+</td>
+<td style="text-align:left;">
+1.0.12
+</td>
+</tr>
+</tbody>
+<tfoot>
+<tr>
+<td style="padding: 0; border:0;" colspan="100%">
+<sup>\*</sup> Version logiciel
+`r sessionInfo()$R.version$version.string` sous
+`r sessionInfo()$running`
+</td>
+</tr>
+</tfoot>
+</table>
 
 [^1]: installation gratuite sur <https://www.qgis.org/fr/site/>
 
