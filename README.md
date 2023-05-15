@@ -1,20 +1,20 @@
-Cartographie sous <img src="logoR.png" style="width:0.3in" /> : méthodes
-et outils
+Cartographie sous <img src="logo_R.png" style="width:0.4in" /> :
+méthodes et outils
 ================
 Journal Club - 15 mai 2023  
 Gaspard Dubost, Vianney Guibourd de Luzinais, Romain Lécuyer & Thomas
 Outrequin
 
-## Réalisation de figures cartographiques
+### Réalisation de figures cartographiques
 
 Carto à partir de shapefiles, rasters (préexistants ou créés
 manuellement). Utilisation de base R, ggplot2, package central sf.
 
-## Outils cartographiques externes
+### Outils cartographiques externes
 
 Logiciel de SIG (QGIS[^1]) et BDD géoréférencée (PostgreSQL[^2])
 
-## Structure du *repository* GitHub
+### Structure du *repository* GitHub
 
 Le document de travail principal se présente sous la forme d’un fichier
 RMarkdown structurant la présentation en sections : de la compréhension
@@ -24,7 +24,7 @@ Les jeux de données et objets géoréférencés utilisés sont stockés dans
 `/data`. Les fichiers de programmation exécutés sont stockés dans
 `/script`.
 
-## Principaux *packages* utilisés
+### Principaux *packages* utilisés
 
 <table>
 <thead>

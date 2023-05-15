@@ -1,5 +1,5 @@
 ---
-title: 'Cartographie sous ![](logoR.png){width=0.3in} : méthodes et outils'
+title: 'Cartographie sous ![](logo_R.png){width=0.4in} : méthodes et outils'
 
 author: |
   | Journal Club - `r format(Sys.time(), '%d %B %Y')`
