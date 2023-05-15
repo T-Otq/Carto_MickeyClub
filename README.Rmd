@@ -1,11 +1,9 @@
 ---
-title: 'Journal Club - Cartographie sous R'
+title: 'Journal Club - Cartographie sous ![](logoR.png){width=1in} : méthodes et outils'
 
-subtitle: 'Méthodes et outils'
+author: 'Gaspard Dubost, Vianney Guibourd de Luzinais, Romain Lécuyer & Thomas Outrequin'
 
-author: "Vianney Guibourd de Luzinais, Romain Lécuyer et Thomas Outrequin"
-
-date: "`r format(Sys.time(), '%d %B %Y')`"
+date: "\n`r format(Sys.time(), '%d %B %Y')`"
 
 output:
   github_document:
@@ -17,42 +15,35 @@ fontsize: 12pt
 
 ```{r setup, include=FALSE}
 
-require(knitr) # chunk/text management
-require(bookdown) # X-references
+require(knitr)
+require(bookdown)
+require(kableExtra)
 
 knitr::opts_chunk$set(echo = FALSE)
 
 ```
 
-[^note_qgis] installation gratuite sur https://www.qgis.org/fr/site/
+[^note_qgis]: installation gratuite sur https://www.qgis.org/fr/site/
 
-[^note_pgSQL] installation gratuite sur https://www.postgresql.org/
+[^note_pgSQL]: installation gratuite sur https://www.postgresql.org/
 
 \newpage
 
-# Réalisation de figures cartographiques sous R
+# Réalisation de figures cartographiques
 
-Carto à partir de shapefiles, raster ...
-Utilisation de base R, ggplot2 ...
+Carto à partir de shapefiles, rasters (préexistants ou créés manuellement). Utilisation de base R, ggplot2, package central sf.
 
-# Outils cartographiques en parallèle de R
+# Outils cartographiques externes
 
-QGIS (ArcGIS)[^note_qgis]
-BDD géoréférencée (PostgreSQL)[^note_pgSQL]
+QGIS (ArcGIS)[^note_qgis] & BDD géoréférencée (PostgreSQL)[^note_pgSQL]
 
-# Structure du repository GitHub
+# Structure du *repository* GitHub
 
-## Données (`/data`)
+Le document de travail principal se présente sous la forme d'un fichier RMarkdown structurant la présentation en sections : de la compréhension des bases aux cas d'application concrets.
 
+Les jeux de données et objets géoréférencés utilisés sont stockés dans le sous-dossier `/data`. Les fichiers de programmation exécutés sont stockés dans le sous-dossier `/script`.
 
-
-## Programmation (`/scripts`)
-
-
-
-# Principaux *packages* R utilisés
-
-All packages used throughout the workflow are stored in the R folder. They are to be loaded using `r sessionInfo()$R.version$version.string` running on `r sessionInfo()$running`.
+# Principaux *packages* utilisés
 
 ```{r, echo = F}
 
@@ -66,5 +57,6 @@ for (i in seq_along(Pkg)){
   PkgVersion <- append(PkgVersion, packageVersion(Pkg[i]))
 }
 
-kable(data.frame(Package = Pkg, Version = as.character(PkgVersion)))
+tab_pkg <- kable(data.frame(Package = Pkg, Version = as.character(PkgVersion)))
+add_footnote(tab_pkg, 'Version logiciel `r sessionInfo()$R.version$version.string` sous `r sessionInfo()$running`', notation = 'symbol')
 ```

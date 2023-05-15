@@ -1,17 +1,23 @@
 ---
-title: "Script_carte_world_shapefile_0"
-author: "Guibourd Vianney, Lécuyer Romain & Outrequin Thomas"
-date: "2023-05-15"
+title: 'Cartographie sous ![](logoR.png){width=1in}'
+author: 'Gaspard Dubost, Vianney Guibourd de Luzinais, Romain Lécuyer & Thomas Outrequin'
+date: "`r format(Sys.time(), '%d %B %Y')`"
 output: html_document
 ---
+
+[^note_coinpeche]: source des données : https://petitsfrenchies.com/les-10-plus-beaux-endroits-pour-pecher-en-france/
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Préparation de l'environnement de travail
+
 ## Packages requis
 
 Le chunk suivant contient les packages utilisés pour produire des cartes avec des shapefiles, et des données que l'on peut représenter dans l'espace.
+
+**Détailler utilité de chaque package**
 
 ```{r}
 library(tidyverse)
@@ -20,7 +26,9 @@ library(sf)
 library(leaflet)
 ```
 
-### Chargement d'un shapefile
+## Chargement d'un shapefile
+
+**Qu'est-ce qu'un shapefile + passage rapide sous QGIS pour en créer/modifier**
 
 ```{r}
 france <- st_read(paste0(getwd(),"/data/france/traitcote.shp"),crs=4326)
@@ -28,17 +36,20 @@ france <- st_read(paste0(getwd(),"/data/france/traitcote.shp"),crs=4326)
 
 A quoi ressemble ce shapefile ?
 
+**Transcrire en Base R**
+
 ```{r}
 ggplot()+
   geom_sf(data=france,fill="darkorange4")
 ```
 
+# Le b.a.-ba de la cartographie avec `base R`
 
-## Exemple
+**Etapes pour faire un plot simple + un peu travaillé, chunk clé-en-main prêt à copier-coller**
 
-Exemple : prenons ce magnifique classement des 10 plus beaux coins de pêche en france
+# Amélioration graphique : utilisation de `ggplot2`
 
-(source : https://petitsfrenchies.com/les-10-plus-beaux-endroits-pour-pecher-en-france/)
+Prenons ce magnifique classement des 10 plus beaux coins de pêche en france[^note_coinpeche]
 
 ```{r pressure, echo=FALSE}
 data_peche <- read.csv2(paste0(getwd(),"/data/CoinPecheVacances.csv"))
@@ -46,7 +57,7 @@ data_peche <- read.csv2(paste0(getwd(),"/data/CoinPecheVacances.csv"))
 data_peche %>% head()
 ```
 
-Comment choisir notre prochaine destination pêche ?
+## Comment choisir notre prochaine destination pêche ?
 
 ```{r}
 ggplot()+
@@ -57,7 +68,7 @@ ggplot()+
                filter(!str_detect(Lieu,"union")),aes(x=Longitude,y=Latitude+0.5,label=Lieu),size=2)
 ```
 
-Et en carte "dynamique" ?
+## Et en carte "dynamique" ?
 
 ```{r}
 require(plotly)
@@ -74,7 +85,7 @@ p
 
 ```
 
-### Mieux que plotly ?
+## Mieux que plotly ?
 
 ```{r}
 library(maps)
@@ -89,3 +100,6 @@ leaflet(data = data_peche) %>%
   addCircleMarkers(popup = ~Lieu)
 ```
 
+# Création d'outils cartographiques : l'application `Shiny`
+
+**Vianney/Gaspard, à vous la main**

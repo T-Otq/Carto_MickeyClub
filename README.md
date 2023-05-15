@@ -1,11 +1,8 @@
-Journal Club - Cartographie sous R
+Journal Club - Cartographie sous R : méthodes et outils
 ================
-Vianney Guibourd de Luzinais, Romain Lécuyer et Thomas Outrequin
+Gaspard Dubost, Vianney Guibourd de Luzinais, Romain Lécuyer et Thomas
+Outrequin
 15 mai 2023
-
-\[^note_qgis\] installation gratuite sur <https://www.qgis.org/fr/site/>
-
-\[^note_pgSQL\] installation gratuite sur <https://www.postgresql.org/>
 
 # Réalisation de figures cartographiques sous R
 
@@ -13,8 +10,7 @@ Carto à partir de shapefiles, raster … Utilisation de base R, ggplot2 …
 
 # Outils cartographiques en parallèle de R
 
-QGIS (ArcGIS)\[^note_qgis\] BDD géoréférencée
-(PostgreSQL)\[^note_pgSQL\]
+QGIS (ArcGIS)[^1] BDD géoréférencée (PostgreSQL)[^2]
 
 # Structure du repository GitHub
 
@@ -33,3 +29,7 @@ Windows 10 x64 (build 19045).
 | dplyr   | 1.1.2   |
 | tidyr   | 1.3.0   |
 | sf      | 1.0.12  |
+
+[^1]: installation gratuite sur <https://www.qgis.org/fr/site/>
+
+[^2]: installation gratuite sur <https://www.postgresql.org/>
