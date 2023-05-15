@@ -1,5 +1,5 @@
 ---
-title: 'Cartographie sous ![](logoR.png){width=0.2in} : méthodes et outils'
+title: 'Cartographie sous ![](logoR.png){width=0.3in} : méthodes et outils'
 
 author: |
   | Journal Club - `r format(Sys.time(), '%d %B %Y')`
@@ -30,21 +30,21 @@ knitr::opts_chunk$set(echo = FALSE)
 
 \newpage
 
-# Réalisation de figures cartographiques
+### Réalisation de figures cartographiques
 
 Carto à partir de shapefiles, rasters (préexistants ou créés manuellement). Utilisation de base R, ggplot2, package central sf.
 
-# Outils cartographiques externes
+### Outils cartographiques externes
 
 Logiciel de SIG (QGIS[^note_qgis]) et BDD géoréférencée (PostgreSQL[^note_pgSQL])
 
-# Structure du *repository* GitHub
+### Structure du *repository* GitHub
 
 Le document de travail principal se présente sous la forme d'un fichier RMarkdown structurant la présentation en sections : de la compréhension des bases aux cas d'application concrets.
 
-Les jeux de données et objets géoréférencés utilisés sont stockés dans le sous-dossier `/data`. Les fichiers de programmation exécutés sont stockés dans le sous-dossier `/script`.
+Les jeux de données et objets géoréférencés utilisés sont stockés dans `/data`. Les fichiers de programmation exécutés sont stockés dans `/script`.
 
-# Principaux *packages* utilisés
+### Principaux *packages* utilisés
 
 ```{r, echo = F}
 
