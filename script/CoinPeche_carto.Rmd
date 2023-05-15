@@ -23,7 +23,7 @@ library(leaflet)
 ### Chargement d'un shapefile
 
 ```{r}
-france <- st_read(paste0(getwd(),"/../data/france/traitcote.shp"),crs=4326)
+france <- st_read(paste0(getwd(),"/data/france/traitcote.shp"),crs=4326)
 ```
 
 A quoi ressemble ce shapefile ?
@@ -41,7 +41,7 @@ Exemple : prenons ce magnifique classement des 10 plus beaux coins de pêche en 
 (source : https://petitsfrenchies.com/les-10-plus-beaux-endroits-pour-pecher-en-france/)
 
 ```{r pressure, echo=FALSE}
-data_peche <- read.csv2(paste0(getwd(),"/../data/CoinPecheVacances.csv"))
+data_peche <- read.csv2(paste0(getwd(),"/data/CoinPecheVacances.csv"))
 
 data_peche %>% head()
 ```
