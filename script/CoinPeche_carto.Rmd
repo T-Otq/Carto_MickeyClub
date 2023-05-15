@@ -17,6 +17,7 @@ Le chunk suivant contient les packages utilisés pour produire des cartes avec d
 library(tidyverse)
 library(ggplot2)
 library(sf)
+library(leaflet)
 ```
 
 ### Chargement d'un shapefile
@@ -67,5 +68,24 @@ p <- ggplot()+
              aes(x=Longitude,y=Latitude,label=Lieu))
 p <- ggplotly(p) 
 p
+```
+
+```{r}
+
+```
+
+### Mieux que plotly ?
+
+```{r}
+library(maps)
+mapStates = map("world", fill = TRUE, plot = FALSE)
+leaflet(data = data_peche) %>% addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=s&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% addCircleMarkers(popup = ~Lieu)
+```
+
+```{r}
+leaflet(data = data_peche) %>% 
+  addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=s&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
+  setView(-1,47,5) %>% 
+  addCircleMarkers(popup = ~Lieu)
 ```
 
