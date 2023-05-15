@@ -1,0 +1,70 @@
+---
+title: 'Journal Club - Cartographie sous R'
+
+subtitle: 'Méthodes et outils'
+
+author: "Vianney Guibourd de Luzinais, Romain Lécuyer et Thomas Outrequin"
+
+date: "`r format(Sys.time(), '%d %B %Y')`"
+
+output:
+  github_document:
+    toc: false
+
+mainfont : Arial
+fontsize: 12pt
+---
+
+```{r setup, include=FALSE}
+
+require(knitr) # chunk/text management
+require(bookdown) # X-references
+
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
+[^note_qgis] installation gratuite sur https://www.qgis.org/fr/site/
+
+[^note_pgSQL] installation gratuite sur https://www.postgresql.org/
+
+\newpage
+
+# Réalisation de figures cartographiques sous R
+
+Carto à partir de shapefiles, raster ...
+Utilisation de base R, ggplot2 ...
+
+# Outils cartographiques en parallèle de R
+
+QGIS (ArcGIS)[^note_qgis]
+BDD géoréférencée (PostgreSQL)[^note_pgSQL]
+
+# Structure du repository GitHub
+
+## Données (`/data`)
+
+
+
+## Programmation (`/scripts`)
+
+
+
+# Principaux *packages* R utilisés
+
+All packages used throughout the workflow are stored in the R folder. They are to be loaded using `r sessionInfo()$R.version$version.string` running on `r sessionInfo()$running`.
+
+```{r, echo = F}
+
+Pkg <- c('dplyr',
+         'tidyr',
+         'sf')
+
+PkgVersion <- c()
+
+for (i in seq_along(Pkg)){
+  PkgVersion <- append(PkgVersion, packageVersion(Pkg[i]))
+}
+
+kable(data.frame(Package = Pkg, Version = as.character(PkgVersion)))
+```
