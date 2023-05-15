@@ -1,9 +1,9 @@
-Journal Club - Cartographie sous
-<img src="logoR.png" style="width:1in" /> : méthodes et outils
+Cartographie sous <img src="logoR.png" style="width:0.2in" /> : méthodes
+et outils
 ================
+Journal Club - 15 mai 2023  
 Gaspard Dubost, Vianney Guibourd de Luzinais, Romain Lécuyer & Thomas
 Outrequin
-15 mai 2023
 
 # Réalisation de figures cartographiques
 
@@ -12,7 +12,7 @@ manuellement). Utilisation de base R, ggplot2, package central sf.
 
 # Outils cartographiques externes
 
-QGIS (ArcGIS)[^1] & BDD géoréférencée (PostgreSQL)[^2]
+Logiciel de SIG (QGIS[^1]) et BDD géoréférencée (PostgreSQL[^2])
 
 # Structure du *repository* GitHub
 
@@ -56,6 +56,14 @@ tidyr
 </tr>
 <tr>
 <td style="text-align:left;">
+ggplot2
+</td>
+<td style="text-align:left;">
+3.4.2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 sf
 </td>
 <td style="text-align:left;">
@@ -66,9 +74,8 @@ sf
 <tfoot>
 <tr>
 <td style="padding: 0; border:0;" colspan="100%">
-<sup>\*</sup> Version logiciel
-`r sessionInfo()$R.version$version.string` sous
-`r sessionInfo()$running`
+<sup></sup> Version logiciel R 4.2.3 (Shortstop Beagle) sous Windows 10
+x64 (build 19045)
 </td>
 </tr>
 </tfoot>

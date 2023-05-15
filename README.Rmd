@@ -1,9 +1,9 @@
 ---
-title: 'Journal Club - Cartographie sous ![](logoR.png){width=1in} : méthodes et outils'
+title: 'Cartographie sous ![](logoR.png){width=0.2in} : méthodes et outils'
 
-author: 'Gaspard Dubost, Vianney Guibourd de Luzinais, Romain Lécuyer & Thomas Outrequin'
-
-date: "\n`r format(Sys.time(), '%d %B %Y')`"
+author: |
+  | Journal Club - `r format(Sys.time(), '%d %B %Y')`
+  | Gaspard Dubost, Vianney Guibourd de Luzinais, Romain Lécuyer & Thomas Outrequin
 
 output:
   github_document:
@@ -17,6 +17,7 @@ fontsize: 12pt
 
 require(knitr)
 require(bookdown)
+require(glue)
 require(kableExtra)
 
 knitr::opts_chunk$set(echo = FALSE)
@@ -35,7 +36,7 @@ Carto à partir de shapefiles, rasters (préexistants ou créés manuellement). 
 
 # Outils cartographiques externes
 
-QGIS (ArcGIS)[^note_qgis] & BDD géoréférencée (PostgreSQL)[^note_pgSQL]
+Logiciel de SIG (QGIS[^note_qgis]) et BDD géoréférencée (PostgreSQL[^note_pgSQL])
 
 # Structure du *repository* GitHub
 
@@ -49,6 +50,7 @@ Les jeux de données et objets géoréférencés utilisés sont stockés dans le
 
 Pkg <- c('dplyr',
          'tidyr',
+         'ggplot2',
          'sf')
 
 PkgVersion <- c()
@@ -57,6 +59,9 @@ for (i in seq_along(Pkg)){
   PkgVersion <- append(PkgVersion, packageVersion(Pkg[i]))
 }
 
+rversion <- glue('{sessionInfo()$R.version$major}.{sessionInfo()$R.version$minor} ({sessionInfo()$R.version$nickname})')
+winversion <- sessionInfo()$running
+
 tab_pkg <- kable(data.frame(Package = Pkg, Version = as.character(PkgVersion)))
-add_footnote(tab_pkg, 'Version logiciel `r sessionInfo()$R.version$version.string` sous `r sessionInfo()$running`', notation = 'symbol')
+add_footnote(tab_pkg, glue('Version logiciel R {rversion} sous {winversion}'), notation = 'none')
 ```
