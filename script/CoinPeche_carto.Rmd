@@ -1,0 +1,71 @@
+---
+title: "Script_carte_world_shapefile_0"
+author: "Guibourd Vianney, Lécuyer Romain & Outrequin Thomas"
+date: "2023-05-15"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Packages requis
+
+Le chunk suivant contient les packages utilisés pour produire des cartes avec des shapefiles, et des données que l'on peut représenter dans l'espace.
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(sf)
+```
+
+### Chargement d'un shapefile
+
+```{r}
+france <- st_read(paste0(getwd(),"/../data/france/traitcote.shp"),crs=4326)
+```
+
+A quoi ressemble ce shapefile ?
+
+```{r}
+ggplot()+
+  geom_sf(data=france,fill="darkorange4")
+```
+
+
+## Exemple
+
+Exemple : prenons ce magnifique classement des 10 plus beaux coins de pêche en france
+
+(source : https://petitsfrenchies.com/les-10-plus-beaux-endroits-pour-pecher-en-france/)
+
+```{r pressure, echo=FALSE}
+data_peche <- read.csv2(paste0(getwd(),"/../data/CoinPecheVacances.csv"))
+
+data_peche %>% head()
+```
+
+Comment choisir notre prochaine destination pêche ?
+
+```{r}
+ggplot()+
+  geom_sf(data=france,fill="darkorange4")+
+  geom_point(data=data_peche %>% 
+               filter(!str_detect(Lieu,"union")),aes(x=Longitude,y=Latitude))+
+  geom_label(data=data_peche %>% 
+               filter(!str_detect(Lieu,"union")),aes(x=Longitude,y=Latitude+0.5,label=Lieu),size=2)
+```
+
+Et en carte "dynamique" ?
+
+```{r}
+require(plotly)
+p <- ggplot()+
+  geom_sf(data=france,fill="darkorange4")+
+  geom_point(data=data_peche %>% 
+               filter(!str_detect(Lieu,"union")),
+             aes(x=Longitude,y=Latitude,label=Lieu))
+p <- ggplotly(p) 
+p
+```
+
