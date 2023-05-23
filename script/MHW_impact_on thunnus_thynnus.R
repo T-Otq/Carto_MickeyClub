@@ -13,7 +13,7 @@ library(ggpubr)
 library(ncdf4)
 #------------------------------------------------------------
 
-### Historical Period###
+### Historical Period##
 nc_meso<-nc_open("data/Thunnus_thynnus.nc")
 prez <- ncvar_get(nc_meso, "probability")
 dim(prez)
