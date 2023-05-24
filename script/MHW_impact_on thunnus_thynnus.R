@@ -14,7 +14,7 @@ library(ncdf4)
 #------------------------------------------------------------
 
 ### Historical Period###
-nc_meso<-nc_open("~/Thunnus_thynnus.nc")
+nc_meso<-nc_open("data/Thunnus_thynnus.nc")
 prez <- ncvar_get(nc_meso, "probability")
 dim(prez)
 lon <- ncvar_get(nc_meso, "longitude")-0.25
@@ -65,7 +65,6 @@ length(unique(dt_tcb2$cell_no1x1))
 # --------------------------------------------------------------------
 # test MAP
 plot(lat~lon, data=dt_tcb2,cex=0.1)
-plot(lat~lon, data=cell_world,cex=0.1)
 # --------------------------------------------------------------------
 cell_world<-as.data.frame(dbGetQuery(liaisons_db_via,("select distinct cell_no as cell_no1x1  from geo.world_grid1x1_v3")))
 head(cell_world)
@@ -84,7 +83,6 @@ thunnus_prez<-dt_tcb_ocean%>%
   summarise(presence=mean(prez)) %>%
   as.data.frame()
 head(thunnus_prez)
-dim(dt_tcb_1x1)
 
 
 thunnus_prez<-rename(thunnus_prez, cell_no = cell_no1x1)
