@@ -17,7 +17,7 @@ drv <- dbDriver("PostgreSQL")
 liaisons_db_via<- dbConnect(drv, dbname="vianney_db",host="halieut.agrocampus-ouest.fr",
                             port=5432,user="vianney",password="***")
 
-#'*Téléchargement des données depuis la base posgresql*
+#Téléchargement des données depuis la base posgresql*
 map_data<-dbGetQuery(liaisons_db_via,"select * from daily_sst_from_avhrr.fix_yearly_event_characterics_90th")
 head(map_data)
 test<-dplyr::filter(map_data,year%in%c(2003,2007,2011,2015))
@@ -29,14 +29,14 @@ map_data<-map_data %>%
             tot_intensity_mean=round(sum(intensity_mean))) %>% 
   as.data.frame()
 head(map_data)
-#'*function for title of graph*
+#function for title of graph*
 myplot_theme1 = function (plot, x.title = NULL, y.title = NULL, plot.title = NULL) {
   plot +   
     labs(title = paste(strwrap(plot.title, width = 50), collapse = "\n"),
          x = x.title, 
          y = y.title)
 }
-#'*function for style map*
+#function for style map*
 style_pp<-function(ggp){
   ggp<-ggp+
     geom_sf(data=graticules_rob, linetype="dotted", color="black", size = 0.4) +
@@ -72,29 +72,29 @@ head(map_TYPE)
 
 #---------------------------
 ui <- fluidPage(
-  titlePanel("Exploration de données par eco_type"), #'*Specify here the title of the web page* 
+  titlePanel("Exploration de données par eco_type"), #Specify here the title of the web page* 
   sidebarLayout(
     sidebarPanel(
-      strong("Ma belle barre latérale"), #'*Specify here the title for the slide bar* 
+      strong("Ma belle barre latérale"), #Specify here the title for the slide bar* 
       selectInput("select", label = h3("Choisir une annee"),
                   choices=unique(map_TYPE$year), multiple=F),
       
     )
     ,
     mainPanel(
-      "Panneau principal: ici sont représentées les sorties désirées", #'*Specify here some explication* 
+      "Panneau principal: ici sont représentées les sorties désirées", #Specify here some explication* 
       plotOutput("mhw_day"),
       
     )
   )
 )
 
-map_TYPE$intensity<-as.factor(map_TYPE$tot_intensity_mean) #'*here is what happen behing the clic button function* 
+map_TYPE$intensity<-as.factor(map_TYPE$tot_intensity_mean) #here is what happen behing the clic button function* 
 server<- function(input, output) {
   output$mhw_day  = renderPlot({
-    map_TYPE_year<- map_TYPE %>%   #'*filter the specific data need dor the map* 
+    map_TYPE_year<- map_TYPE %>%   #filter the specific data need dor the map* 
       filter(year==input$select)
-    style_pp(ggplot(data=map_TYPE_year) +  #'*execution of the map* 
+    style_pp(ggplot(data=map_TYPE_year) +  #execution of the map* 
                geom_sf(aes(fill=tot_intensity_mean),color=NA, size=0.01)+
                scale_fill_gradient2("Nb of MHW day",low="white",high="red4",midpoint=10,limits=c(0,20),oob=squish)+
                theme(legend.position = "bottom"))

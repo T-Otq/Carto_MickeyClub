@@ -1,105 +1,134 @@
 ---
-title: 'Cartographie sous ![](logoR.png){width=1in}'
+title: 'Cartographie sous ![](data/logo_R.png){width=0.5in}'
 author: 'Gaspard Dubost, Vianney Guibourd de Luzinais, Romain Lécuyer & Thomas Outrequin'
 date: "`r format(Sys.time(), '%d %B %Y')`"
 output: html_document
 ---
 
+[^sf]: Pebesma, E., 2018. Simple Features for R: Standardized Support for Spatial Vector Data. The R Journal 10 (1), 439-446, https://doi.org/10.32614/RJ-2018-009
 [^note_coinpeche]: source des données : https://petitsfrenchies.com/les-10-plus-beaux-endroits-pour-pecher-en-france/
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 # Préparation de l'environnement de travail
 
-## Packages requis
-
-Le chunk suivant contient les packages utilisés pour produire des cartes avec des shapefiles, et des données que l'on peut représenter dans l'espace.
-
-**Détailler utilité de chaque package**
-
 ```{r}
+
 library(tidyverse)
-library(ggplot2)
-library(sf)
-library(leaflet)
+
 ```
 
 ## Chargement d'un shapefile
 
-**Qu'est-ce qu'un shapefile + passage rapide sous QGIS pour en créer/modifier**
+Un shapefile est un fichier contenant toute l'information liée à la géométrie des objets qu'il contient. Le format de fichier associé (.shp) est devenu un standard parmi tous les outils de SIG (Systèmes d'Informations Géographiques) et est notamment exploitable sous R. Attention, le fichier .shp est accompagné d'une série d'autres fichiers portant le même nom (.dbf, .xml, .shx, ...) qui doivent être conservés au même endroit que le shapefile.
+
+Le logiciel libre `QGIS` permet de créer/manipuler/éditer des shapefiles rapidement pour ensuite les exporter vers l'environnement R et générer des cartes. Si le logiciel est installé sur votre machine, ouvrez `data/Loire_GIS.qgz`.
+
+Une fois le shapefile généré, il est nécessaire de le charger dans l'environnement R. Le package permettant la manipulation de ces fichiers est `sf`[^sf].
 
 ```{r}
-france <- st_read(paste0(getwd(),"/data/france/traitcote.shp"),crs=4326)
+
+Loire_coast <- sf::st_read('data/Loire_shapefile/coastline.shp', crs = 4326)
+
 ```
 
-A quoi ressemble ce shapefile ?
-
-**Transcrire en Base R**
+Les fonctionnalités de `R base` permettent de visualiser rapidement ce à quoi ressemblent les objets contenus dans ce shapefile.
 
 ```{r}
-ggplot()+
-  geom_sf(data=france,fill="darkorange4")
+
+plot(Loire_coast$geometry)
+
 ```
 
-# Le b.a.-ba de la cartographie avec `base R`
+# Le b.a.-ba de la cartographie avec `R base`
 
-**Etapes pour faire un plot simple + un peu travaillé, chunk clé-en-main prêt à copier-coller**
+À partir de ces connaissances, il est possible de générer une représentation cartographique simple.
+
+```{r}
+
+Loire_tidal_level <- sf::st_read('data/Loire_shapefile/tidal_level.shp', crs = 4326)
+
+tidal_level_color <- c('#DDDDCC', '#AACCFF', '#AAFFCC')
+
+plot(Loire_coast$geometry, lwd = 2,
+     main = "Les surfaces marnantes de l'estuaire de la Loire")
+
+plot(Loire_tidal_level['level'],
+     border = NA,
+     pal = tidal_level_color,
+     add = TRUE)
+
+```
+
+Pour la cartographie sous R sans utilisation de packages, ça s'arrête plus ou moins là. Une représentation cartographique plus travaillée pourrait inclure différentes informations complémentaires : flèche du nord, échelle ...
 
 # Amélioration graphique : utilisation de `ggplot2`
 
-Prenons ce magnifique classement des 10 plus beaux coins de pêche en france[^note_coinpeche]
+Prenons ce magnifique classement des 10 plus beaux coins de pêche en France[^note_coinpeche].
 
-```{r pressure, echo=FALSE}
-data_peche <- read.csv2(paste0(getwd(),"/data/CoinPecheVacances.csv"))
+```{r}
 
-data_peche %>% head()
+France_fond <- sf::read_sf('data/Peche_fond.shp')
+
+spot_peche <- read.csv2('data/Peche_meilleurcoin.csv') %>% 
+  mutate(classement = as.numeric(rownames(.)))
+
+head(spot_peche)
+
 ```
 
 ## Comment choisir notre prochaine destination pêche ?
 
-```{r}
-ggplot()+
-  geom_sf(data=france,fill="darkorange4")+
-  geom_point(data=data_peche %>% 
-               filter(!str_detect(Lieu,"union")),aes(x=Longitude,y=Latitude))+
-  geom_label(data=data_peche %>% 
-               filter(!str_detect(Lieu,"union")),aes(x=Longitude,y=Latitude+0.5,label=Lieu),size=2)
-```
-
-## Et en carte "dynamique" ?
-
-```{r}
-require(plotly)
-p <- ggplot()+
-  geom_sf(data=france,fill="darkorange4")+
-  geom_point(data=data_peche %>% 
-               filter(!str_detect(Lieu,"union")),
-             aes(x=Longitude,y=Latitude,label=Lieu))
-p <- ggplotly(p) 
-p
-```
+Il suffit de représenter la localisation de ces dix meilleurs coins de pêche sur un fond de carte de la France métropolitaine, puis de choisir le lieu de nos prochaines vacances !
 
 ```{r}
 
+map_peche <- ggplot(spot_peche, aes(x = longitude, y = latitude)) +
+  geom_sf(data = France_fond, fill = '#DDDDCC', inherit.aes = FALSE) +
+  geom_point(aes(fill = factor(classement)), shape = 21, size = 1.5, stroke = .2) +
+  ggrepel::geom_label_repel(aes(label = lieu), size = 2.5, point.padding = 3) +
+  ggspatial::annotation_north_arrow(location = 'tr',
+                                    style = ggspatial::north_arrow_nautical()) +
+  ggspatial::annotation_scale(location = 'bl', width_hint = .25) +
+  viridis::scale_fill_viridis('Classement', discrete = TRUE) +
+  labs(x = 'Longitude', y = 'Latitude',
+       title = 'Meilleurs coins de pêche français : un top 10') +
+  coord_sf(xlim = c(-6, 10), ylim = c(41, 51)) +
+  theme_bw()
+
+map_peche
+
 ```
 
-## Mieux que plotly ?
+## Une approche plus exploratoire : la carte dynamique avec `plotly`
+
+Une carte dynamique permet un minimum d'interaction avec la carte. Nous pouvons enfin aller voir où se trouve ce super spot de pêche sur l'île de la Réunion.
+
+```{r, warning = FALSE}
+
+map_peche <- map_peche + geom_text(aes(label = lieu), size = 2.5, nudge_y = -.3)
+
+plotly::ggplotly(map_peche)
+
+```
+
+## Pour viser toujours plus loin : `leaflet` et les cartes Google
 
 ```{r}
-library(maps)
-mapStates = map("world", fill = TRUE, plot = FALSE)
-leaflet(data = data_peche) %>% addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=s&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% addCircleMarkers(popup = ~Lieu)
+
+mapStates = maps::map("world", fill = TRUE, plot = FALSE)
+
+leaflet::leaflet(data = spot_peche) %>% 
+  leaflet::addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=s&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
+  leaflet::setView(-1,47,5) %>% 
+  leaflet::addCircleMarkers(popup = ~lieu)
+
 ```
 
-```{r}
-leaflet(data = data_peche) %>% 
-  addTiles(urlTemplate = "https://mts1.google.com/vt/lyrs=s&hl=en&src=app&x={x}&y={y}&z={z}&s=G", attribution = 'Google') %>% 
-  setView(-1,47,5) %>% 
-  addCircleMarkers(popup = ~Lieu)
-```
+# Création d'outils interactifs : l'application `Shiny`
 
-# Création d'outils cartographiques : l'application `Shiny`
 
-**Vianney/Gaspard, à vous la main**
+
+## Exemple concret d'application
+
+Un exemple d'application Shiny au format HTML (associé au script `script/Alose_app_shiny.R`) :
+
+https://gaspardd.shinyapps.io/CMAP/
