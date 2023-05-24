@@ -1,5 +1,5 @@
 ---
-title: 'Cartographie sous ![](logo_R.png){width=0.4in} : méthodes et outils'
+title: 'Cartographie sous ![](data/logo_R.png){width=0.4in} : méthodes et outils'
 
 author: |
   | Journal Club - `r format(Sys.time(), '%d %B %Y')`
@@ -13,55 +13,57 @@ mainfont : Arial
 fontsize: 12pt
 ---
 
-```{r setup, include=FALSE}
-
-require(knitr)
-require(bookdown)
-require(glue)
-require(kableExtra)
-
-knitr::opts_chunk$set(echo = FALSE)
-
-```
-
 [^note_qgis]: installation gratuite sur https://www.qgis.org/fr/site/
 
 [^note_pgSQL]: installation gratuite sur https://www.postgresql.org/
 
 \newpage
 
-### Réalisation de figures cartographiques
+### Contenu du dépôt
 
-Carto à partir de shapefiles, rasters (préexistants ou créés manuellement). Utilisation de base R, ggplot2, package central sf.
+Ce dépôt contient différents scripts permettant de réaliser des représentations cartographiques par divers moyens : `R base`, `ggplot2`, `plotly`, application `Shiny`. L'intérêt de ce dépôt est de partager des scripts opérationnels que chacun peut adapter à son cas précis pour générer une carte sous R.
 
-### Outils cartographiques externes
+Les cartes combinent des objets géoréférencés comme des shapefiles ou des rasters, téléchargés depuis Internet, créés à la main sous un logiciel de SIG (comme QGIS[^note_qgis]) ou stockés dans une base de données géoréférencées (comme PostgreSQL[^note_pgSQL]) et des données issues d'analyses dans lesquelles les variables spatiales occupent une place importante et représentées par divers figurés (points, lignes, polygones de taille ou encore de couleur variables).
 
-Logiciel de SIG (QGIS[^note_qgis]) et BDD géoréférencée (PostgreSQL[^note_pgSQL])
+### Structure du dépôt
 
-### Structure du *repository* GitHub
+Le document principal se présente sous la forme d'un fichier HTML `Presentation.html` structurant la présentation en sections : de la compréhension des bases aux cas d'application concrets. Une partie des scripts de cartographie y figure sous forme de chunks.
 
-Le document de travail principal se présente sous la forme d'un fichier RMarkdown structurant la présentation en sections : de la compréhension des bases aux cas d'application concrets.
+Les jeux de données et objets géoréférencés publics utilisés sont stockés dans le dossier `/data`. Les fichiers de programmation amenés à être explorés sont stockés dans le dossier `/script`.
 
-Les jeux de données et objets géoréférencés utilisés sont stockés dans `/data`. Les fichiers de programmation exécutés sont stockés dans `/script`.
+Les sections présentées sont les suivantes :
+
+ - Introduction à la cartographie sous R (préfixe des fichiers associés "Loire_")
+ - Création de cartes avancées avec `ggplot2` et `plotly` ("Peche_")
+ - Connexion à une base de données géospatialisées avec `RPostgreSQL` ("MHW_")
+ - Exploration interactive *via* l'application `Shiny` ("MHW_" & "Alose_")
 
 ### Principaux *packages* utilisés
 
 ```{r, echo = F}
 
 Pkg <- c('dplyr',
-         'tidyr',
+         'sf',
          'ggplot2',
-         'sf')
+         'plotly',
+         'leaflet',
+         'RPostgreSQL',
+         'shiny')
 
 PkgVersion <- c()
 
 for (i in seq_along(Pkg)){
+  
   PkgVersion <- append(PkgVersion, packageVersion(Pkg[i]))
+  
 }
 
-rversion <- glue('{sessionInfo()$R.version$major}.{sessionInfo()$R.version$minor} ({sessionInfo()$R.version$nickname})')
+rversion <- glue::glue('{sessionInfo()$R.version$major}.{sessionInfo()$R.version$minor} ({sessionInfo()$R.version$nickname})')
+
 winversion <- sessionInfo()$running
 
-tab_pkg <- kable(data.frame(Package = Pkg, Version = as.character(PkgVersion)))
-add_footnote(tab_pkg, glue('Version logiciel R {rversion} sous {winversion}'), notation = 'none')
+tab_pkg <- knitr::kable(data.frame(Package = Pkg, Version = as.character(PkgVersion)))
+
+kableExtra::add_footnote(tab_pkg, glue::glue('Version logiciel R {rversion} sous {winversion}'), notation = 'none')
+
 ```
