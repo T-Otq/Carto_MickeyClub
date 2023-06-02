@@ -2,10 +2,7 @@
 title: 'Cartographie sous ![](data/logo_R.png){width=0.5in}'
 author: 'Gaspard Dubost, Vianney Guibourd de Luzinais, Romain Lécuyer & Thomas Outrequin'
 date: "`r format(Sys.time(), '%d %B %Y')`"
-output:
-  html_document:
-    theme: flatly
-runtime: shiny
+output: html_document
 ---
 
 [^sf]: Pebesma, E., 2018. Simple Features for R: Standardized Support for Spatial Vector Data. The R Journal 10 (1), 439-446, https://doi.org/10.32614/RJ-2018-009
@@ -143,41 +140,41 @@ exec$plot
 ```{r}
 
 ui <- fluidPage(
-  titlePanel("Exploration de données par eco_type"),
-  sidebarLayout(
-    sidebarPanel(
-      strong("Ma belle barre latérale"),
-      selectInput("select", label = h3("Choisir une annee"),
-                  choices=ordered(unique(exec$thon_over_temp$year)), multiple=F),
-      
-    )
-    ,
-    mainPanel(
-      "Panneau principal: ici sont représentées les sorties désirées",
-      plotOutput("event_number"),
-      
-    )
-  )
+ titlePanel("Exploration de données par eco_type"),
+ sidebarLayout(
+   sidebarPanel(
+     strong("Ma belle barre latérale"),
+     selectInput("select", label = h3("Choisir une annee"),
+                 choices=ordered(unique(exec$thon_over_temp$year)), multiple=F),
+     
+   )
+   ,
+   mainPanel(
+     "Panneau principal: ici sont représentées les sorties désirées",
+     plotOutput("event_number"),
+     
+   )
+ )
 )
 # map_TYPE$nb_event<-as.numeric(map_TYPE$nb_event)
 server<- function(input, output) {
-  output$event_number = renderPlot({
-    map_TYPE_year<- exec$thon_over_temp %>% 
-      filter(year==input$select)
-    ggplot(data=map_TYPE_year) +
-      geom_sf(aes(fill=mhw_day),color=NA, size=0.01)+
-      geom_sf(data = exec$geo_borders)+
-      coord_sf(xlim = c(-100,30),ylim = c(-40,40))+  
-      viridis::scale_fill_viridis(name="Number of mhw day\nwith tmax=29.5°C",
-                                  option = 'turbo', trans = 'log', breaks = c(10, 20, 40, 80))+
-      theme(panel.grid.major.x = element_line(color = NA),panel.background = element_blank(),
-            axis.text = element_blank(),axis.ticks = element_blank(), axis.title = element_blank(),
+ output$event_number = renderPlot({
+   map_TYPE_year<- exec$thon_over_temp %>% 
+     filter(year==input$select)
+   ggplot(data=map_TYPE_year) +
+     geom_sf(aes(fill=mhw_day),color=NA, size=0.01)+
+     geom_sf(data = exec$geo_borders)+
+     coord_sf(xlim = c(-100,30),ylim = c(-40,40))+  
+     viridis::scale_fill_viridis(name="Number of mhw day\nwith tmax=29.5°C",
+                                 option = 'turbo', trans = 'log', breaks = c(10, 20, 40, 80))+
+     theme(panel.grid.major.x = element_line(color = NA),panel.background = element_blank(),
+           axis.text = element_blank(),axis.ticks = element_blank(), axis.title = element_blank(),
             plot.margin=unit(c(0,0,0,0), "cm"),
-            # plot.title = element_text(size = 15, face = "bold", hjust = 0.5, vjust=-0.5),
-            legend.title = element_text(size = 15, face = "bold", hjust = 0.5, vjust=0.5),
-            legend.text = element_text(size=15))
-    
-  })
+           plot.title = element_text(size = 15, face = "bold", hjust = 0.5, vjust=-0.5),
+           legend.title = element_text(size = 15, face = "bold", hjust = 0.5, vjust=0.5),
+           legend.text = element_text(size=15))
+   
+ })
 }
 
 shinyApp(ui, server)

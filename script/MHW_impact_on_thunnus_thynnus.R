@@ -44,7 +44,7 @@ MHW_thunnus_exec <- function(){
   
   # linking mt database
   drv <- dbDriver("PostgreSQL")
-  liaisons_db_via <- dbConnect(drv, dbname="vianney_db",host="halieut.agrocampus-ouest.fr",port=5432,user="vianney",password="***")
+  liaisons_db_via <- dbConnect(drv, dbname="vianney_db",host="halieut.agrocampus-ouest.fr",port=5432,user="vianney",password="*******")
   #------------------------------------------------------------
   cell_world05<-as.data.frame(dbGetQuery(liaisons_db_via,("select distinct cell_no, lati as lat, longi as lon from geo.world_grid05x05")))
   head(cell_world05)

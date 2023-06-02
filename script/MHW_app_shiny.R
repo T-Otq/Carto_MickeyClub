@@ -17,7 +17,7 @@ library(rgdal)
 
 drv <- dbDriver("PostgreSQL")
 liaisons_db_via<- dbConnect(drv, dbname="vianney_db",host="halieut.agrocampus-ouest.fr",
-                            port=5432,user="vianney",password="***")
+                            port=5432,user="vianney",password="*******")
 
 #Téléchargement des données depuis la base posgresql*
 map_data<-dbGetQuery(liaisons_db_via,"select * from daily_sst_from_avhrr.fix_yearly_event_characterics_90th")
